@@ -1,0 +1,45 @@
+<!-- ... [same head and navbar as yours] ... -->
+
+<!-- Product Grid -->
+<section class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-10" id="productGrid">
+
+  <!-- Static Products (Optional) -->
+  <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+    <img src="https://via.placeholder.com/300x200?text=Product+1" class="rounded mb-3 w-full h-48 object-cover" />
+    <h3 class="text-sm font-semibold text-gray-800">Casual Cotton T-Shirt</h3>
+    <p class="text-blue-600 font-bold text-sm mt-1">₹499</p>
+    <button onclick="addToCart('Casual Cotton T-Shirt', 499, 'https://via.placeholder.com/300x200?text=Product+1')" class="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700 text-sm">Add to Cart</button>
+  </div>
+
+</section>
+
+<!-- JS: Add to Cart + Dynamic Products -->
+<script>
+  function addToCart(title, price, image) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let existing = cart.find(item => item.title === title);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({ title, price, image, quantity: 1 });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Added to cart');
+  }
+
+  // Dynamically load seller products
+  const dynamicProducts = JSON.parse(localStorage.getItem("myProducts")) || [];
+  const grid = document.getElementById("productGrid");
+
+  dynamicProducts.forEach(product => {
+    const div = document.createElement("div");
+    div.className = "bg-white p-4 rounded-lg shadow hover:shadow-lg transition";
+    div.innerHTML = `
+      <img src="${product.image}" class="rounded mb-3 w-full h-48 object-cover" />
+      <h3 class="text-sm font-semibold text-gray-800">${product.title}</h3>
+      <p class="text-blue-600 font-bold text-sm mt-1">₹${product.price}</p>
+      <button onclick='addToCart("${product.title}", ${product.price}, "${product.image}")' class="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700 text-sm">Add to Cart</button>
+    `;
+    grid.appendChild(div);
+  });
+</script>

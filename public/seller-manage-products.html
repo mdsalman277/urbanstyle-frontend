@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seller Manage Products | UrbanStyle</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="auth.js"></script>
+  <script>checkAuth();</script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">UrbanStyle Seller</h1>
+      <nav class="space-x-4 text-sm text-gray-700">
+        <a href="seller-dashboard.html" class="hover:text-blue-600">Dashboard</a>
+        <a href="upload-product.html" class="hover:text-blue-600">Upload</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">📋 Your Products</h2>
+    <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- JS will load products here -->
+    </div>
+  </main>
+
+  <script>
+    const products = JSON.parse(localStorage.getItem("myProducts")) || [];
+    const container = document.getElementById("productList");
+
+    function renderProducts() {
+      container.innerHTML = '';
+      if (products.length === 0) {
+        container.innerHTML = `<p class="text-gray-500">No products found.</p>`;
+        return;
+      }
+
+      products.forEach((p, index) => {
+        const div = document.createElement("div");
+        div.className = "bg-white p-4 rounded shadow";
+
+        div.innerHTML = `
+          <img src="${p.image}" alt="${p.title}" class="w-full h-40 object-cover rounded mb-3" />
+          <h3 class="font-bold text-gray-800">${p.title}</h3>
+          <p class="text-sm text-gray-600">₹${p.price}</p>
+          <p class="text-xs text-gray-500 my-2">${p.description}</p>
+          <div class="flex justify-between mt-3">
+            <button onclick="editProduct(${index})" class="bg-yellow-500 text-white px-3 py-1 text-sm rounded">Edit</button>
+            <button onclick="deleteProduct(${index})" class="bg-red-600 text-white px-3 py-1 text-sm rounded">Delete</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function deleteProduct(index) {
+      if (confirm("Are you sure to delete this product?")) {
+        products.splice(index, 1);
+        localStorage.setItem("myProducts", JSON.stringify(products));
+        renderProducts();
+      }
+    }
+
+    function editProduct(index) {
+      const p = products[index];
+      localStorage.setItem("editProductIndex", index);
+      localStorage.setItem("editProduct", JSON.stringify(p));
+      window.location.href = "edit-product.html";
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>

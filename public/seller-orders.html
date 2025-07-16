@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seller Dashboard | Orders</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <header class="bg-white shadow sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">UrbanStyle Seller</h1>
+      <nav class="space-x-6 text-gray-700 text-sm">
+        <a href="seller-dashboard.html" class="hover:text-blue-600">Dashboard</a>
+        <a href="seller-orders.html" class="text-blue-600 font-semibold">Orders</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">📦 Customer Orders</h2>
+    <div id="ordersList" class="space-y-4"></div>
+  </main>
+
+  <script>
+    // Dummy localStorage order data (you can remove this part if real backend later)
+    if (!localStorage.getItem('orders')) {
+      const dummyOrders = [
+        {
+          name: "Salman Ali",
+          email: "salman@example.com",
+          phone: "9876543210",
+          address: "New Delhi",
+          items: [
+            { title: "T-Shirt", quantity: 2, price: 499 },
+            { title: "Jeans", quantity: 1, price: 899 }
+          ]
+        },
+        {
+          name: "Faizan Khan",
+          email: "faizan@example.com",
+          phone: "9123456789",
+          address: "Lucknow",
+          items: [
+            { title: "Hoodie", quantity: 1, price: 1299 }
+          ]
+        }
+      ];
+      localStorage.setItem('orders', JSON.stringify(dummyOrders));
+    }
+
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const container = document.getElementById('ordersList');
+
+    orders.forEach((order, index) => {
+      const div = document.createElement("div");
+      div.className = "bg-white p-5 rounded shadow";
+
+      let itemsHTML = order.items.map(item => `
+        <li class="text-sm text-gray-700">
+          ${item.title} × ${item.quantity} = ₹${item.price * item.quantity}
+        </li>
+      `).join('');
+
+      const total = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      div.innerHTML = `
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">👤 ${order.name}</h3>
+        <p class="text-sm text-gray-600 mb-1">📧 ${order.email}</p>
+        <p class="text-sm text-gray-600 mb-1">📞 ${order.phone}</p>
+        <p class="text-sm text-gray-600 mb-2">🏠 ${order.address}</p>
+        <ul class="mb-2">${itemsHTML}</ul>
+        <p class="text-right font-bold text-gray-800">Total: ₹${total}</p>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>

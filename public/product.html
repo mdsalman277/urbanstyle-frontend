@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UrbanStyle | Product Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">UrbanStyle</h1>
+      <nav class="space-x-6 text-gray-700 text-sm">
+        <a href="index.html" class="hover:text-blue-600">Home</a>
+        <a href="shop.html" class="hover:text-blue-600">Shop</a>
+        <a href="cart.html" class="hover:text-blue-600">Cart</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Product Detail Section -->
+  <main class="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-10 bg-white rounded shadow mt-6">
+    
+    <!-- Image -->
+    <img src="https://via.placeholder.com/600x400?text=Product+Image" class="rounded-lg shadow-md w-full h-auto object-cover" alt="Product Image">
+
+    <!-- Details -->
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Stylish Cotton T-Shirt</h2>
+      <p class="text-blue-600 font-bold text-lg mb-4">₹499</p>
+      <p class="text-gray-600 text-sm mb-6">
+        This stylish cotton t-shirt is designed for comfort and style. Perfect for casual wear and made from 100% premium cotton fabric.
+      </p>
+
+      <button onclick="addToCart('Stylish Cotton T-Shirt', 499, 'https://via.placeholder.com/600x400?text=Product+Image')" class="px-6 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+        Add to Cart
+      </button>
+    </div>
+  </main>
+
+  <script>
+    function addToCart(title, price, image) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let existing = cart.find(item => item.title === title);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ title, price, image, quantity: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Added to cart');
+    }
+  </script>
+
+</body>
+</html>

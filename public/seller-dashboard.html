@@ -1,0 +1,88 @@
+<script src="auth.js"></script>
+<script>checkAuth();</script>
+
+<script src="auth.js"></script>
+<script>
+  checkAuth();
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UrbanStyle | Seller Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">UrbanStyle Seller</h1>
+      <button onclick="logout()" class="text-sm text-red-500 hover:underline">Logout</button>
+    </div>
+  </header>
+
+  <!-- Dashboard -->
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 Seller Dashboard</h2>
+
+    <!-- Add Product Button -->
+    <div class="mb-6 text-right">
+      <a href="seller-upload.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">+ Add New Product</a>
+    </div>
+
+    <!-- Product List -->
+    <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Products will be inserted here dynamically -->
+    </div>
+  </main>
+
+  <!-- Script: Load Dummy Products (or from localStorage/API) -->
+  <script>
+    const productList = document.getElementById("productList");
+
+    // Dummy products – future me backend API se replace karo
+    const myProducts = JSON.parse(localStorage.getItem('myProducts')) || [
+      {
+        title: "Casual Cotton Shirt",
+        price: 699,
+        image: "https://via.placeholder.com/300x200?text=Shirt"
+      },
+      {
+        title: "Urban Hoodie",
+        price: 1299,
+        image: "https://via.placeholder.com/300x200?text=Hoodie"
+      }
+    ];
+
+    // Render products
+    myProducts.forEach((product, index) => {
+      const card = document.createElement("div");
+      card.className = "bg-white p-4 rounded-lg shadow hover:shadow-md transition";
+
+      card.innerHTML = `
+        <img src="${product.image}" class="rounded mb-3 w-full h-48 object-cover" alt="Product Image">
+        <h3 class="text-lg font-semibold text-gray-800">${product.title}</h3>
+        <p class="text-blue-600 font-bold mt-1">₹${product.price}</p>
+        <button onclick="deleteProduct(${index})" class="mt-3 w-full bg-red-500 text-white py-1.5 rounded hover:bg-red-600 text-sm">Delete</button>
+      `;
+
+      productList.appendChild(card);
+    });
+
+    // Dummy delete function
+    function deleteProduct(index) {
+      myProducts.splice(index, 1);
+      localStorage.setItem("myProducts", JSON.stringify(myProducts));
+      location.reload();
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      alert("Logged out");
+      window.location.href = "seller-login.html";
+    }
+  </script>
+</body>
+</html>

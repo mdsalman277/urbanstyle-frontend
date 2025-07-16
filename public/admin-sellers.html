@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sellers | Admin Panel | UrbanStyle</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex min-h-screen bg-gray-100">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow h-screen px-4 py-6">
+    <h1 class="text-xl font-bold text-blue-600 mb-8">🛡️ Admin Panel</h1>
+    <nav class="space-y-4 text-sm">
+      <a href="admin-panel.html" class="block text-gray-600">📊 Dashboard</a>
+      <a href="admin-products.html" class="block text-gray-600">📦 Products</a>
+      <a href="admin-sellers.html" class="block text-blue-600 font-semibold">🧑‍💼 Sellers</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 overflow-y-auto">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">🧑‍💼 Registered Sellers</h2>
+
+    <table class="min-w-full bg-white rounded shadow overflow-hidden">
+      <thead class="bg-gray-200 text-left text-sm uppercase text-gray-600">
+        <tr>
+          <th class="px-4 py-3">Name</th>
+          <th class="px-4 py-3">Email</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="sellerTable" class="text-sm text-gray-700">
+        <!-- Data from JS -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    // Dummy sellers data (Replace with backend call later)
+    const sellers = [
+      { name: "Salman Sheikh", email: "salman@example.com", status: "pending" },
+      { name: "Rahul Yadav", email: "rahul@example.com", status: "approved" },
+      { name: "Anjali Verma", email: "anjali@example.com", status: "rejected" }
+    ];
+
+    const table = document.getElementById("sellerTable");
+
+    sellers.forEach((s, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="px-4 py-3">${s.name}</td>
+        <td class="px-4 py-3">${s.email}</td>
+        <td class="px-4 py-3 capitalize">${s.status}</td>
+        <td class="px-4 py-3 space-x-2">
+          <button onclick="approve(${i})" class="bg-green-500 text-white px-3 py-1 rounded text-xs">Approve</button>
+          <button onclick="reject(${i})" class="bg-red-500 text-white px-3 py-1 rounded text-xs">Reject</button>
+        </td>
+      `;
+      table.appendChild(tr);
+    });
+
+    function approve(index) {
+      alert("✅ Seller Approved: " + sellers[index].name);
+      // TODO: backend integration
+    }
+
+    function reject(index) {
+      alert("❌ Seller Rejected: " + sellers[index].name);
+    }
+  </script>
+</body>
+</html>
